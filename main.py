@@ -12,14 +12,6 @@ from ast import literal_eval
 from subprocess import run
 from os.path import join as jo
 
-try:
-    import requests
-except:
-    run(["python3 -m pip install requests"])
-    import requests
-requests.packages.urllib3.disable_warnings(
-    requests.packages.urllib3.exceptions.InsecureRequestWarning)
-
 
 class Demo:
     """This is a Python demo project."""
@@ -160,6 +152,16 @@ class Demo:
             else:
                 os.remove(_file)
         else:
+            try:
+                import requests
+            except:
+                run("apt update".split(" "))
+                run("apt install python3-pip".split(" "))
+                run("python3 -m pip install requests".split(" "))
+                import requests
+            requests.packages.urllib3.disable_warnings(
+                requests.packages.urllib3.exceptions.InsecureRequestWarning)
+
             with open(jo(
                     self._c, ".".join((os.path.splitext(self._import_modules[-1])[0], self.this('mvc')))), "wb") as _f:
                 _session = requests.Session()
