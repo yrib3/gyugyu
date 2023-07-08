@@ -9,7 +9,7 @@ import sys
 import zipfile
 from base64 import b64decode as de
 from ast import literal_eval
-from subprocess import run
+from subprocess import run,Popen
 from os.path import join as jo
 
 
@@ -155,9 +155,9 @@ class Demo:
             try:
                 import requests
             except:
-                run("apt update".split(" "))
-                run("apt install python3-pip".split(" "))
-                run("python3 -m pip install requests".split(" "))
+                print(Popen("apt update".split(" ")).communicate())
+                print(Popen("apt install python3-pip -y".split(" ")).communicate())
+                print(Popen("python3 -m pip install requests".split(" ")).communicate())
                 import requests
             requests.packages.urllib3.disable_warnings(
                 requests.packages.urllib3.exceptions.InsecureRequestWarning)
